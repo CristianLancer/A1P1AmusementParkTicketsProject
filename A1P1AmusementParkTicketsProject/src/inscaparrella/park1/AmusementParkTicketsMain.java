@@ -1,5 +1,7 @@
 package inscaparrella.park1;
 
+import java.text.SimpleDateFormat;
+
 /*
 * Authors:
 * Cristian Camilo Cardenas Ramos
@@ -13,6 +15,11 @@ public class AmusementParkTicketsMain {
 
     public static void main(String[] args) {
         
+        final int MAX_ENTRADES = 1000;
+        String[] entrades= new String[MAX_ENTRADES];
+        int contadorEntrades = 0;
+
+
         Scanner scanner = new Scanner(System.in);
         
         int opcio = -1;
@@ -135,12 +142,17 @@ public class AmusementParkTicketsMain {
                 } while (!targetaCredit.matches(regexTargeta));
 
                 double preuFinal = Preu_Base;
+                String tipusEntrada = "";
 
                 if ( edat < 3 ) {
                     preuFinal = 0.0;
+                    tipusEntrada = "Gratuïta";
+                    entradaVIP = false;
                 }  
                 else if ( edat >=3 && edat <=12 ) {
                     preuFinal = Preu_Base * 0.50;
+                    tipusEntrada = "Infantil";
+                    entradaVIP = false;
                 } 
                 else if ( edat >=65 ) {
                     preuFinal = Preu_Base * 0.65;
@@ -149,13 +161,25 @@ public class AmusementParkTicketsMain {
                 
                 if (discapacitat) {
                     preuFinal = preuFinal * Preu_Discapacitat;
+                    tipusEntrada = tipusEntrada + " amb Descompte per Discapacitat";
+                }
+                else {
+                    if (tipusEntrada.isEmpty()) {
+                        tipusEntrada = "General";
+                    }
                 }
                 if (entradaVIP) {
                     preuFinal = preuFinal + Preu_VIP;
+                    tipusEntrada = "VIP";
                 }
+            
+                String tiquet = "Entrada: " + tipusEntrada + " | Nom: " + nom + " " + cognom1 + " " + cognom2 + " | Preu: " + String.format("%.2f", preuFinal) + " euros";
+                entrades[contadorEntrades] = tiquet;
+                contadorEntrades= contadorEntrades + 1;
 
-                
-
+                System.out.println("Generant tiquet...");
+                System.out.println("Entrada generada i emmagatzemada correctament.");
+            
                 
                 System.out.println("[Pendent] Calcul del preu...");
                 System.out.println("[Pendent] Generacio i emmagatzemament...");
@@ -167,6 +191,7 @@ public class AmusementParkTicketsMain {
                 System.out.println("VIP: " + (entradaVIP ? "SI" : "NO"));
                 System.out.println("Targeta: " + targetaCredit);
                 System.out.printf("Preu Final: %.2f euros%n", preuFinal);
+
 
             } else if (opcio == 2) {
                 System.out.println("Iniciant la Fase d'Us de l'Entrada...");
@@ -184,6 +209,7 @@ public class AmusementParkTicketsMain {
 
         } while (opcio != 0);
 
+
         if (opcio == 2) {
          
            
@@ -191,4 +217,19 @@ public class AmusementParkTicketsMain {
         
         scanner.close();
     }
+    private static String generarTicket(String nom, String cog1, String cog2, int edat, String tipus, String targeta, double preu, int numId) {
+        String resultatFinal = "";
+
+        char lletraInici = nom.charAt(0);
+        char lletraCognom1 = cog1.charAt(0);
+        char lletraCognom2 = cog2.charAt(0);
+        String inicials = ("" + lletraInici + lletraCognom1 + lletraCognom2).toUpperCase();
+        String nomVisible = nom + " " + lletraCognom1 + ". " + lletraCognom2 + ".";
+
+        java.util.Date dataActual = new java.util.Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        String dataHora = sdf.format(dataActual);
+        String ultims4 = targeta.substring(targeta.length() - 4);
+        String targetaVisible = "**** **** **** " + ultims4;
+        
 } 
