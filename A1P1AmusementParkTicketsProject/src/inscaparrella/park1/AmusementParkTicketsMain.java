@@ -172,7 +172,28 @@ public class AmusementParkTicketsMain {
                 }
 
             } else if (opcio == 2) {
-                System.out.println("Iniciant la Fase d'Us de l'Entrada...");
+                if (contadorEntrades == 0) {
+                    System.out.println("Error: No hi ha entrades disponibles.");
+                } else {
+                    System.out.println("--- 2. Us de l'entrada ---");
+                    String idBuscat = "";
+                    System.out.print("Introdueix el Numero d'entrada (DAMW-XXX-XXX): ");
+                    idBuscat = scanner.nextLine().trim();
+                    
+                    boolean entradaTrobada = false;
+                    for (int i = 0; i < contadorEntrades; i++) {
+                        if (entrades[i] != null && entrades[i].contains("Número d'entrada: " + idBuscat)) {
+                            entradaTrobada = true;
+                            System.out.println("Entrada " + idBuscat + " trobada i validada.");
+                            System.out.println("Benvingut/da al Parc!");
+                            break;
+                        }
+                    }
+                    
+                    if (!entradaTrobada) {
+                        System.out.println("Error: Entrada no trobada.");
+                    }
+                }
             } else if (opcio == 3) {
                 System.out.println("Mostrant Estadistiques del Dia...");
             } else if (opcio == 0) {
@@ -226,11 +247,5 @@ public class AmusementParkTicketsMain {
                 "--------------------------------------------------";
 
         return resultatFinal;
-
-
-
-
-
-        
     }
 }
