@@ -172,7 +172,7 @@ public class AmusementParkTicketsMain {
                 }
 
             } else if (opcio == 2) {
-                // --- OPCIO 2: US DE L'ENTRADA ---
+              
                 if (contadorEntrades == 0) {
                     System.out.println("Error: No hi ha entrades disponibles.");
                 } else {
@@ -185,7 +185,7 @@ public class AmusementParkTicketsMain {
                     int i = 0;
                     int indexTrobada = -1;
 
-                    // Cerca de l'entrada (Sense utilitzar 'break' per complir la norma)
+                  
                     while (i < contadorEntrades && !trobat) {
                         if (entrades[i] != null && entrades[i].contains("Número d'entrada: " + idBuscat)) {
                             trobat = true;
@@ -199,7 +199,7 @@ public class AmusementParkTicketsMain {
                         String serveiEscollit = "";
                         boolean serveiValid = false;
                         
-                        // Validacio del servei (A, E, V)
+                       
                         do {
                             System.out.print("Vols pujar a una atracció (A), veure un espectacle (E) o gaudir d'un servei VIP (V)? ");
                             serveiEscollit = scanner.nextLine().trim().toUpperCase();
@@ -219,7 +219,7 @@ public class AmusementParkTicketsMain {
                             }
                         } while (!serveiValid);
 
-                        // Actualitzacio del comptador en el String del tiquet
+                       
                         String textACercar = "";
                         if (serveiEscollit.equals("A")) {
                             textACercar = "Nombre d'atraccions: ";
@@ -229,18 +229,18 @@ public class AmusementParkTicketsMain {
                             textACercar = "Nombre de serveis VIP: ";
                         }
 
-                        // Logica per extreure, incrementar i reemplaçar el numero dins del String
+                      
                         int inici = tiquetActual.indexOf(textACercar);
                         int finalLinia = tiquetActual.indexOf("\n", inici);
                         String liniaVella = tiquetActual.substring(inici, finalLinia);
                         
-                        // Extreiem el numero actual de la línia (ex: "Nombre d'atraccions: 0" -> "0")
+                       
                         String numeroStr = liniaVella.substring(textACercar.length()).trim();
                         int numeroNou = Integer.parseInt(numeroStr) + 1;
                         
                         String liniaNova = textACercar + numeroNou;
                         
-                        // Reemplacem la línia antiga per la nova en el tiquet
+                      
                         entrades[indexTrobada] = tiquetActual.replace(liniaVella, liniaNova);
 
                         System.out.println("\nOperació realitzada correctament!");
