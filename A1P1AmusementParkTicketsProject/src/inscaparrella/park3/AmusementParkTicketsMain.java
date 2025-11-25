@@ -297,7 +297,7 @@ public class AmusementParkTicketsMain {
                 "Edat: " + edat + " anys\n" +
                 "Tipus d'entrada: " + tipus + "\n" +
                 "Targeta: " + targetaVisible + "\n" +
-                String.format("Preu final: %.2f€", preu) + "\n" +
+                String.format("Preu final: %.2f\u20AC", preu) + "\n" +
                 "\n" +
                 "Nombre d'atraccions: 0\n" +
                 "Nombre d'espectacles: 0\n" +
