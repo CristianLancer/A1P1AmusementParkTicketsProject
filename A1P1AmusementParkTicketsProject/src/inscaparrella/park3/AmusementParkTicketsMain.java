@@ -254,6 +254,9 @@ public class AmusementParkTicketsMain {
 
             } else if (opcio == 3) {
                 System.out.println("Mostrant Estadistiques del Dia...");
+                String estadistiques = generarInformeEstadistiques(entrades, contadorEntrades);
+                System.out.println(estadistiques);
+
             } else if (opcio == 0) {
                 System.out.println("Gracies per utilitzar el sistema. Sortint.");
             } else {
@@ -305,5 +308,93 @@ public class AmusementParkTicketsMain {
                 "--------------------------------------------------";
 
         return resultatFinal;
+    }
+
+    private static String generarInformeEstadistiques(String[] entrades, int contador) {
+        String informe = "";
+        int cNormal = 0;
+        int cDescompte = 0;
+        int cGratuita = 0;
+        int cVIP = 0;
+
+        int accAtraccions = 0;
+        int accEspectacles = 0;
+        int accVIP = 0;
+
+        double ingressosTotals = 0.0;
+
+        int i = 0;
+        while (i < contador) {
+            String tiquet = entrades[i];
+
+            if (tiquet.contains("Tipus d'entrada: Normal")) {
+                cNormal++;
+            } else if (tiquet.contains("Tipus d'entrada: Amb descompte")) {
+                cDescompte++;
+            } else if (tiquet.contains("Tipus d'entrada: Gratuïta")) {
+                cGratuita++;
+            } else if (tiquet.contains("Tipus d'entrada: VIP")) {
+                cVIP++;
+            }
+
+            String etiquetaPreu = "Preu final: ";
+            int iniciPreu = tiquet.indexOf(etiquetaPreu);
+            if (iniciPreu != -1) {
+                iniciPreu = iniciPreu + etiquetaPreu.length();
+                int finalPreu = tiquet.indexOf("\u20AC", iniciPreu); 
+                if (finalPreu != -1) {
+                    String preuStr = tiquet.substring(iniciPreu, finalPreu).trim();
+                    preuStr = preuStr.replace(",", "."); 
+                    ingressosTotals = ingressosTotals + Double.parseDouble(preuStr);
+                }
+            }
+
+            String etiquetaAtraccions = "Nombre d'atraccions: ";
+            if (tiquet.contains(etiquetaAtraccions)) {
+                int iniciA = tiquet.indexOf(etiquetaAtraccions) + etiquetaAtraccions.length();
+                int finalA = tiquet.indexOf("\n", iniciA);
+                String numAtraccionsStr = tiquet.substring(iniciA, finalA).trim();
+                accAtraccions = accAtraccions + Integer.parseInt(numAtraccionsStr);
+            }
+
+            String etiquetaEspectacles = "Nombre d'espectacles: ";
+            if (tiquet.contains(etiquetaEspectacles)) {
+                int iniciE = tiquet.indexOf(etiquetaEspectacles) + etiquetaEspectacles.length();
+                int finalE = tiquet.indexOf("\n", iniciE);
+                String numEspectaclesStr = tiquet.substring(iniciE, finalE).trim();
+                accEspectacles = accEspectacles + Integer.parseInt(numEspectaclesStr);
+            }
+
+            String etiquetaVIP = "Nombre de serveis VIP: ";
+            if (tiquet.contains(etiquetaVIP)) {
+                int iniciV = tiquet.indexOf(etiquetaVIP) + etiquetaVIP.length();
+                int finalV = tiquet.indexOf("\n", iniciV);
+                String numVIPStr = tiquet.substring(iniciV, finalV).trim();
+                accVIP = accVIP + Integer.parseInt(numVIPStr);
+            }
+            i++;
+        }
+
+        Date dataActual = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+            String dataHora = sdf.format(dataActual);
+
+        informe = "--------------------------------------------------\n" +
+                "ESTADISTIQUES DEL DIA\n" +
+                "Data i hora del informe: " + dataHora + "\n" +
+                "--------------------------------------------------\n" +
+                "Total d'entrades venudes: " + contador + "\n" +
+                " - Entrades Normals: " + cNormal + "\n" +
+                " - Entrades amb Descompte: " + cDescompte + "\n" +
+                " - Entrades Gratuïtes: " + cGratuita + "\n" +
+                " - Entrades VIP: " + cVIP + "\n" +
+                String.format("Ingressos totals del dia: %.2f\u20AC\n", ingressosTotals) +
+                "Total d'usos dels serveis:\n" +
+                " - Atraccions: " + accAtraccions + "\n" +
+                " - Espectacles: " + accEspectacles + "\n" +
+                " - Serveis VIP: " + accVIP + "\n" +
+                "--------------------------------------------------";
+        return informe;
+        
     }
 }
